@@ -19,7 +19,8 @@ namespace Football.Service
                     {
                         firstName = firstName,
                         lastName = lastName,
-                        salary=salary
+                        salary = salary,
+                        isBusy = 0
                     };
                     context.Referee.Add(referee);
                     context.SaveChanges();
@@ -85,7 +86,7 @@ namespace Football.Service
 
                     foreach (Referee item in reffereList)
                     {
-                        list.Add(new ReffereViewModel { ID = item.id,FirstName=item.firstName,LastName=item.lastName,Salary=item.salary });
+                        list.Add(new ReffereViewModel { ID = item.id,FirstName=item.firstName,LastName=item.lastName,Salary=item.salary,IsBusy=item.isBusy==0?false:true });
                     }
 
                     return list;

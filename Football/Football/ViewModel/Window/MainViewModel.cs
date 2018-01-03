@@ -307,7 +307,17 @@ namespace Football.ViewModel.Window
 
         private void RemoveTicket(object parameter)
         {
-         
+            if (parameter == null) return;
+            var values = (TicketViewModel)parameter;
+            if (ticketService.RemoveTicket(values.ID))
+            {
+                UpdateTicketGrid();
+            }
+            else
+            {
+                AlertWindow alert = new AlertWindow();
+                alert.ShowDialog();
+            }
         }
 
         private void AddTicket(object parameter)

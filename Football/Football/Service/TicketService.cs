@@ -34,7 +34,7 @@ namespace Football.Service
             }
         }
 
-        public bool RemoveTicket(int ticketID)
+        public bool RemoveTicket(long ticketID)
         {
             try
             {
@@ -60,6 +60,30 @@ namespace Football.Service
         private bool CanRemoveTicket(Ticket ticket)
         {
             return true;
+        }
+
+        public bool ChangeDateByMatch(long matchID)
+        {
+            try
+            {
+                using(dbEntities1 context=new dbEntities1())
+                {
+                    List<Ticket> list = context.Ticket.Where(x => x.matchID == matchID).ToList();
+                    //DateTime newDate=context.Match.Select(x=>x.da)
+                    foreach (Ticket item in list)
+                    {
+                        //change date in ticket
+                        //item.date;
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public List<TicketViewModel> GetAllTicket()
