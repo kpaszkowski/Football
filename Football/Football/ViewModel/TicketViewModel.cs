@@ -41,22 +41,38 @@ namespace Football.ViewModel
                 }
             }
         }
-        DateTime _date;
-        public DateTime Date
+        long _MatchID;
+        public long MatchID
         {
             get
             {
-                return _date;
+                return _MatchID;
             }
             set
             {
-                if (_date != value)
+                if (_MatchID != value)
                 {
-                    _date = value;
-                    RaisePropertyChanged("Date");
+                    _MatchID = value;
+                    RaisePropertyChanged("MatchID");
                 }
             }
         }
+        //DateTime _date;
+        //public DateTime Date
+        //{
+        //    get
+        //    {
+        //        return _date;
+        //    }
+        //    set
+        //    {
+        //        if (_date != value)
+        //        {
+        //            _date = value;
+        //            RaisePropertyChanged("Date");
+        //        }
+        //    }
+        //}
 
         void RaisePropertyChanged(string prop)
         {

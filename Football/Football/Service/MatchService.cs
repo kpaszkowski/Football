@@ -150,5 +150,33 @@ namespace Football.Service
                 throw e;
             }
         }
+
+        internal bool EditMatch(int stadiumID, int hostID, int guestID, int mainRefereeID, int technicalRefereeID, int linearRefereeID, int observerRefereeID, int hostGoals, int guestGoals,int currentMatchID)
+        {
+            try
+            {
+                using (dbEntities1 context = new dbEntities1())
+                {
+                    Match match = context.Match.FirstOrDefault(x => x.id == currentMatchID);
+                    match.stadiumID = stadiumID;
+                    match.hostID = hostID;
+                    match.guestID = guestID;
+                    match.mainRefereeID = mainRefereeID;
+                    match.technicalRefereeID = technicalRefereeID;
+                    match.linesRefereeID = linearRefereeID;
+                    match.observerRefereeID = observerRefereeID;
+                    match.hostGoals = hostGoals;
+                    match.guestGoals = guestGoals;
+                    context.Entry(match).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }

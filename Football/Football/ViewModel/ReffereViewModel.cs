@@ -9,8 +9,8 @@ namespace Football.ViewModel
 {
     public class ReffereViewModel
     {
-        long _ID;
-        public long ID
+        int _ID;
+        public int ID
         {
             get
             {

@@ -10,8 +10,8 @@ namespace Football.ViewModel
     public class MatchViewModel
     {
         #region Properties
-        long _ID;
-        public long ID
+        int _ID;
+        public int ID
         {
             get
             {

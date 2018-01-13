@@ -13,8 +13,8 @@ namespace Football
         string _Name;
         string _City;
         string _Country;
-        long _ID;
-        public long ID
+        int _ID;
+        public int ID
         {
             get
             {

@@ -126,7 +126,6 @@
                             <Button Content="Edit match" Command="{Binding EditMatchCommand}">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{StaticResource Converter}">
-                                        <Binding Path="SelectedMatch"/>
                                         <Binding Path="SelectedStadium"/>
                                         <Binding Path="SelectedClub"/>
                                         <Binding Path="SelectedClub2"/>
@@ -136,6 +135,7 @@
                                         <Binding Path="SelectedReffere4"/>
                                         <Binding Path="Text" ElementName="tbHostGoals"/>
                                         <Binding Path="Text" ElementName="tbGuestGoals"/>
+                                        <Binding Path="SelectedMatch"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
@@ -148,14 +148,11 @@
                             <ComboBox Name="cbTicketMatch" ItemsSource="{Binding match}" SelectedItem="{Binding SelectedMatch}" DisplayMemberPath="ID"/>
                             <Label>PESEL</Label>
                             <TextBox Name="tbPESELTicket" Text="95959595959"/>
-                            <Label>Date on Ticket</Label>
-                            <DatePicker x:Name="dpDate" SelectedDateFormat="Long" SelectedDate="{Binding MyDateTimeProperty2, Mode=TwoWay}" ></DatePicker>
                             <Button Content="Add ticket" Command="{Binding AddTicketCommand}">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{StaticResource Converter}">
                                         <Binding Path="SelectedMatch"/>
                                         <Binding Path="Text" ElementName="tbPESELTicket"/>
-                                        <Binding Path="SelectedDate" ElementName="dpDate"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>

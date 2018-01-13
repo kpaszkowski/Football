@@ -78,5 +78,27 @@ namespace Football
                 throw e;
             }
         }
+
+        internal bool EditStadium(string newName, string newCity, string newCountry, long iD)
+        {
+            try
+            {
+                using (dbEntities1 context=new dbEntities1())
+                {
+                    Stadium stadium = context.Stadium.FirstOrDefault(x => x.id == iD);
+                    stadium.name = newName;
+                    stadium.city = newCity;
+                    stadium.country = newCountry;
+                    context.Entry(stadium).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }

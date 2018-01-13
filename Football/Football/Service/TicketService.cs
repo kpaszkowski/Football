@@ -9,7 +9,7 @@ namespace Football.Service
 {
     public class TicketService
     {
-        public void AddTicket(string PESEL, long matchID, string date)
+        public void AddTicket(string PESEL, int matchID, string date)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Football.Service
 
                     foreach (Ticket item in ticketList)
                     {
-                        list.Add(new TicketViewModel { ID = item.id,PESEL=item.PESEL});
+                        list.Add(new TicketViewModel { ID = item.id,PESEL=item.PESEL,MatchID=item.Match.id});
                     }
 
                     return list;
@@ -139,6 +139,27 @@ namespace Football.Service
             }
             catch (Exception e)
             {
+                throw e;
+            }
+        }
+
+        internal bool EditTicket(int matchID, string pESEL, long currentTicketID)
+        {
+            try
+            {
+                using (dbEntities1 context = new dbEntities1())
+                {
+                    Ticket ticket = context.Ticket.FirstOrDefault(x => x.id == currentTicketID);
+                    ticket.matchID = matchID;
+                    ticket.PESEL = pESEL;
+                    context.Entry(ticket).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
                 throw e;
             }
         }

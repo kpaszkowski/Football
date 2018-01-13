@@ -258,6 +258,15 @@ namespace Football.ViewModel.Window
                 ShowInfoWindow("Podaj poprawne dane");
                 return;
             }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            double salary = double.Parse((string)values[2].ToString());
+            ReffereViewModel currentReferee = (ReffereViewModel)values[3];
+            if (reffereService.EditReferee(firstName,lastName,salary,currentReferee.ID))
+            {
+                RefereshAll();
+            }
         }
 
         void UpdateReffereGrid()//Bieda update , czysci grida i od nowa laduje
@@ -324,6 +333,21 @@ namespace Football.ViewModel.Window
                 ShowInfoWindow("Podaj poprawne dane");
                 return;
             }
+            var values = (object[])parameter;
+            StadiumViewModel stadionName = (StadiumViewModel)values[0];
+            ClubViewModel hostName = (ClubViewModel)values[1];
+            ClubViewModel guestName = (ClubViewModel)values[2];
+            ReffereViewModel mainReffere = (ReffereViewModel)values[3];
+            ReffereViewModel technicalReffere = (ReffereViewModel)values[4];
+            ReffereViewModel linearReffere = (ReffereViewModel)values[5];
+            ReffereViewModel observerReffere = (ReffereViewModel)values[6];
+            int hostGoals = Int32.Parse((string)values[7].ToString());
+            int guestGoals = Int32.Parse((string)values[8].ToString());
+            MatchViewModel currentMatch = (MatchViewModel)values[9];
+            if (matchService.EditMatch(stadionName.ID,hostName.ID,guestName.ID,mainReffere.ID,technicalReffere.ID,linearReffere.ID,observerReffere.ID,hostGoals,guestGoals,currentMatch.ID))
+            {
+                RefereshAll();
+            }
         }
 
         void UpdateMatchGrid()//Bieda update , czysci grida i od nowa laduje
@@ -381,6 +405,14 @@ namespace Football.ViewModel.Window
             {
                 ShowInfoWindow("Podaj poprawne dane");
                 return;
+            }
+            var values = (object[])parameter;
+            int matchTicketID = Int32.Parse(values[0].ToString());
+            string PESEL = values[1].ToString();
+            TicketViewModel currentTicket = (TicketViewModel)values[2];
+            if (ticketService.EditTicket(matchTicketID, PESEL,currentTicket.ID))
+            {
+                RefereshAll();
             }
         }
 
@@ -442,6 +474,15 @@ namespace Football.ViewModel.Window
                 ShowInfoWindow("Podaj poprawne dane");
                 return;
             }
+            var values = (object[])parameter;
+            string newName = values[0].ToString();
+            string newCity = values[1].ToString();
+            string newCountry = values[2].ToString();
+            StadiumViewModel currentStadium = (StadiumViewModel)values[3];
+            if (stadiumService.EditStadium(newName, newCity, newCountry, currentStadium.ID))
+            {
+                RefereshAll();
+            }
         }
 
         void UpdateStadiumGrid()//Bieda update , czysci grida i od nowa laduje
@@ -498,6 +539,14 @@ namespace Football.ViewModel.Window
                 ShowInfoWindow("Podaj poprawne dane");
                 return;
             }
+            var values = (object[])parameter;
+            string newName = values[0].ToString();
+            StadiumViewModel newStadium = (StadiumViewModel)values[1];
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            if (clubService.EditClub(newName,newStadium.ID,currentClub.ID))
+            {
+                RefereshAll();
+            }
         }
 
         void UpdateClubGrid()//Bieda update , czysci grida i od nowa laduje
@@ -512,6 +561,15 @@ namespace Football.ViewModel.Window
         #endregion
 
         #region Other
+
+        private void RefereshAll()
+        {
+            UpdateClubGrid();
+            UpdateMatchGrid();
+            UpdateReffereGrid();
+            UpdateStadiumGrid();
+            UpdateTicketGrid();
+        }
 
         private void InitializeCommands()
         {

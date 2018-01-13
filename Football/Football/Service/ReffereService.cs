@@ -96,5 +96,27 @@ namespace Football.Service
                 throw e;
             }
         }
+
+        internal bool EditReferee(string firstName, string lastName, double salary, int iD)
+        {
+            try
+            {
+                using (dbEntities1 context = new dbEntities1())
+                {
+                    Referee referee = context.Referee.FirstOrDefault(x => x.id == iD);
+                    referee.firstName = firstName;
+                    referee.lastName = lastName;
+                    referee.salary = salary;
+                    context.Entry(referee).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }

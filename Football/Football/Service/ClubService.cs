@@ -124,5 +124,26 @@ namespace Football
                 throw e;
             }
         }
+
+        internal bool EditClub(string newName, int newStadiumID, long oldClubID)
+        {
+            try
+            {
+                using (dbEntities1 context = new dbEntities1())
+                {
+                    Club club = context.Club.FirstOrDefault(x => x.id == oldClubID);
+                    club.name = newName;
+                    club.stadiumID = newStadiumID;
+                    context.Entry(club).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
