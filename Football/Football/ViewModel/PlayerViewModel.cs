@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Football.ViewModel
 {
-    public class ReffereViewModel : INotifyPropertyChanged
+    public class PlayerViewModel : INotifyPropertyChanged
     {
         int _ID;
         public int ID
@@ -57,23 +57,22 @@ namespace Football.ViewModel
                 }
             }
         }
-        double _salary;
-        public double Salary
+        string _ClubName;
+        public string ClubName
         {
             get
             {
-                return _salary;
+                return _ClubName;
             }
             set
             {
-                if (_salary != value)
+                if (_ClubName != value)
                 {
-                    _salary = value;
-                    RaisePropertyChanged("Salary");
+                    _ClubName = value;
+                    RaisePropertyChanged("ClubName");
                 }
             }
         }
-
         void RaisePropertyChanged(string prop)
         {
             if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }

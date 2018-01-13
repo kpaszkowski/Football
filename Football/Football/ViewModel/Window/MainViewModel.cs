@@ -17,6 +17,7 @@ namespace Football.ViewModel.Window
         TicketService ticketService;
         MatchService matchService;
         ReffereService reffereService;
+        PlayerService playerService;
         #endregion
 
         #region Field
@@ -28,6 +29,7 @@ namespace Football.ViewModel.Window
         public ObservableCollection<TicketViewModel> ticket { get; set; }
         public ObservableCollection<MatchViewModel> match { get; set; }
         public ObservableCollection<ReffereViewModel> reffere { get; set; }
+        public ObservableCollection<PlayerViewModel> player { get; set; }
 
         #endregion
 
@@ -177,6 +179,22 @@ namespace Football.ViewModel.Window
                 }
             }
         }
+        object _SelectedPlayer;
+        public object SelectedPlayer
+        {
+            get
+            {
+                return _SelectedPlayer;
+            }
+            set
+            {
+                if (_SelectedPlayer != value)
+                {
+                    _SelectedPlayer = value;
+                    RaisePropertyChanged("SelectedPlayer");
+                }
+            }
+        }
 
         #endregion
 
@@ -201,6 +219,10 @@ namespace Football.ViewModel.Window
         public RelayCommand AddReffereCommand { get; set; }
         public RelayCommand RemoveReffereCommand { get; set; }
         public RelayCommand EditReffereCommand { get; set; }
+
+        public RelayCommand AddPlayerCommand { get; set; }
+        public RelayCommand RemovePlayerCommand { get; set; }
+        public RelayCommand EditPlayerCommand { get; set; }
 
 
         #endregion
@@ -560,6 +582,75 @@ namespace Football.ViewModel.Window
         }
         #endregion
 
+        #region Player
+
+        private void EditPlayer(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            PlayerViewModel currentPlayer = (PlayerViewModel)values[3];
+            if (playerService.EditPlayer(firstName, lastName, currentClub.ID,currentPlayer.ID))
+            {
+                RefereshAll();
+            }
+        }
+
+        private void RemovePlayer(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano gracza");
+                return;
+            }
+            PlayerViewModel currentPlayer = (PlayerViewModel)parameter;
+            if (playerService.RemovePlayer(currentPlayer.ID))
+            {
+                RefereshAll();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć gracza");
+                return;
+            }
+        }
+
+        private void AddPlayer(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            if (playerService.AddPlayer(firstName,lastName,currentClub.ID))
+            {
+                RefereshAll();
+            }
+
+        }
+
+        private void UpdatePlayerGrid()
+        {
+            var p = playerService.GetAllPlayer();
+            player.Clear();
+            foreach (PlayerViewModel item in p)
+            {
+                player.Add(item);
+            }
+        }
+
+        #endregion
+
         #region Other
 
         private void RefereshAll()
@@ -569,6 +660,7 @@ namespace Football.ViewModel.Window
             UpdateReffereGrid();
             UpdateStadiumGrid();
             UpdateTicketGrid();
+            UpdatePlayerGrid();
         }
 
         private void InitializeCommands()
@@ -593,18 +685,23 @@ namespace Football.ViewModel.Window
             RemoveReffereCommand = new RelayCommand(RemoveReffere);
             EditReffereCommand = new RelayCommand(EditReferee);
 
+            AddPlayerCommand = new RelayCommand(AddPlayer);
+            RemovePlayerCommand = new RelayCommand(RemovePlayer);
+            EditPlayerCommand = new RelayCommand(EditPlayer);
 
             stadium = new ObservableCollection<StadiumViewModel>();
             club = new ObservableCollection<ClubViewModel>();
             match = new ObservableCollection<MatchViewModel>();
             ticket = new ObservableCollection<TicketViewModel>();
             reffere = new ObservableCollection<ReffereViewModel>();
+            player = new ObservableCollection<PlayerViewModel>();
 
             stadiumService = new StadiumService();
             clubService = new ClubService();
             ticketService = new TicketService();
             matchService = new MatchService();
             reffereService = new ReffereService();
+            playerService = new PlayerService();
         }
 
         public void ShowInfoWindow(string info)

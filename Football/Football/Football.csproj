@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Service\ClubService.cs" />
     <Compile Include="Service\MatchService.cs" />
+    <Compile Include="Service\PlayerService.cs" />
     <Compile Include="Service\ReffereService.cs" />
     <Compile Include="Service\TicketService.cs" />
     <Compile Include="Service\StadiumService.cs" />
@@ -132,6 +133,7 @@
     </Compile>
     <Compile Include="ViewModel\ClubViewModel.cs" />
     <Compile Include="ViewModel\MatchViewModel.cs" />
+    <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\ReffereViewModel.cs" />
     <Compile Include="ViewModel\StadiumViewModel.cs" />
     <Compile Include="ViewModel\TicketViewModel.cs" />

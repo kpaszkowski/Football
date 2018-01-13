@@ -171,14 +171,14 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Reffere">
+            <TabItem Header="Reffere and Player">
                 <ScrollViewer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        <!--Reffere-->
+                        <!--Referee-->
                         <StackPanel Grid.Column="0">
                             <Label>First Name</Label>
                             <TextBox Name="tbReffereFirstName" Text="ReffereFirstName"/>
@@ -207,6 +207,36 @@
                             </Button>
                             <Button Content="Remove referee" Command="{Binding RemoveReffereCommand}" CommandParameter="{Binding SelectedReffere}"/>
                             <DataGrid IsReadOnly="True" ItemsSource="{Binding reffere}" SelectedItem="{Binding SelectedReffere}"/>
+                        </StackPanel>
+                        <!--Player-->
+                        <StackPanel Grid.Column="1">
+                            <Label>First Name</Label>
+                            <TextBox Name="tbPlayerFirstName" Text="PlayerFirstName"/>
+                            <Label>Last Name</Label>
+                            <TextBox Name="tbPlayerLastName" Text="PlayerLastName"/>
+                            <Label>Club</Label>
+                            <ComboBox Name="cbHPlayerClub" ItemsSource="{Binding club}" SelectedItem="{Binding SelectedClub}" DisplayMemberPath="Name"/>
+                            <Button Content="Add player" Command="{Binding AddPlayerCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbPlayerFirstName"/>
+                                        <Binding Path="Text" ElementName="tbPlayerLastName"/>
+                                        <Binding Path="SelectedClub"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Edit player" Command="{Binding EditPlayerCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbPlayerFirstName"/>
+                                        <Binding Path="Text" ElementName="tbPlayerLastName"/>
+                                        <Binding Path="SelectedClub"/>
+                                        <Binding Path="SelectedPlayer"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Remove player" Command="{Binding RemovePlayerCommand}" CommandParameter="{Binding SelectedPlayer}"/>
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding player}" SelectedItem="{Binding SelectedPlayer}"/>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
