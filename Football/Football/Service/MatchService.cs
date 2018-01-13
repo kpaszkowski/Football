@@ -11,13 +11,13 @@ namespace Football.Service
     {
         TicketService ticketService = new TicketService();
 
-        public void AddMatch(string stadiumName,long hostID,long guestID,long mainReffereID,long technicalReffereID,long linearReffereID,long observerReffereID,int hostGoals,int guestGoals)
+        public void AddMatch(long stadiumID,long hostID,long guestID,long mainReffereID,long technicalReffereID,long linearReffereID,long observerReffereID,int hostGoals,int guestGoals)
         {
             try
             {
                 using (dbEntities1 context = new dbEntities1())
                 {
-                    Stadium stadium = context.Stadium.FirstOrDefault(x => x.name == stadiumName);
+                    Stadium stadium = context.Stadium.FirstOrDefault(x => x.id == stadiumID);
                     Club hostClub = context.Club.FirstOrDefault(x => x.id == hostID);
                     Club guestClub = context.Club.FirstOrDefault(x => x.id == guestID);
                     Referee mainReffere = context.Referee.FirstOrDefault(x => x.id == mainReffereID);
@@ -26,6 +26,7 @@ namespace Football.Service
                     Referee observerReffere = context.Referee.FirstOrDefault(x => x.id == observerReffereID);
                     Match match = new Match
                     {
+                        Stadium=stadium,
                         Club=hostClub,
                         Club1=guestClub,
                         Referee=mainReffere,

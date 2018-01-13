@@ -33,7 +33,7 @@ namespace Football.Service
             }
         }
 
-        public bool RemoveTicket(int ticketID)
+        public bool RemoveTicket(long ticketID)
         {
             try
             {

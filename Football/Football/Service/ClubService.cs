@@ -34,13 +34,13 @@ namespace Football
         //    }
         //}
 
-        public void AddClub(string name, string stadiumName)
+        public void AddClub(string name, long stadiumID)
         {
             try
             {
                 using (dbEntities1 context = new dbEntities1())
                 {
-                    Stadium stadium = context.Stadium.FirstOrDefault(x => x.name == stadiumName);
+                    Stadium stadium = context.Stadium.FirstOrDefault(x => x.id == stadiumID);
                     Club club = new Club
                     {
                         name = name,

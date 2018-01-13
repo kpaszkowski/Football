@@ -19,9 +19,10 @@ namespace Football
     /// </summary>
     public partial class AlertWindow : Window
     {
-        public AlertWindow()
+        public AlertWindow(string info)
         {
             InitializeComponent();
+            LabelInfo.Content = info;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
