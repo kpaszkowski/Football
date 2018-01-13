@@ -17,7 +17,6 @@ namespace Football
         public int id { get; set; }
         public int matchID { get; set; }
         public string PESEL { get; set; }
-        public System.DateTime date { get; set; }
     
         public virtual Match Match { get; set; }
     }

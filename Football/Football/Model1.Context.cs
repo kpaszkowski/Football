@@ -16,7 +16,7 @@ namespace Football
     public partial class dbEntities1 : DbContext
     {
         public dbEntities1()
-            : base("name=dbEntities1")
+            : base("name=baseEntities")
         {
         }
     

@@ -21,7 +21,6 @@ namespace Football.Service
                     {
                         Match = match,
                         PESEL = PESEL,
-                        date = myDate,
                     };
                     context.Ticket.Add(ticket);
                     context.SaveChanges();
@@ -74,7 +73,7 @@ namespace Football.Service
 
                     foreach (Ticket item in ticketList)
                     {
-                        list.Add(new TicketViewModel { ID = item.id,PESEL=item.PESEL,Date=item.date});
+                        list.Add(new TicketViewModel { ID = item.id,PESEL=item.PESEL});
                     }
 
                     return list;
@@ -97,7 +96,7 @@ namespace Football.Service
 
                     foreach (Ticket item in ticketList)
                     {
-                        list.Add(new TicketViewModel { ID = item.id, PESEL = item.PESEL, Date = item.date });
+                        list.Add(new TicketViewModel { ID = item.id, PESEL = item.PESEL });
                     }
 
                     return list;

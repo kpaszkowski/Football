@@ -86,7 +86,6 @@
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converter\Converter.cs" />
-    <Compile Include="Service\ClubService.cs" />
     <Compile Include="Match.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -114,17 +113,14 @@
     <Compile Include="Referee.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Service\ClubService.cs" />
     <Compile Include="Service\MatchService.cs" />
     <Compile Include="Service\ReffereService.cs" />
     <Compile Include="Service\TicketService.cs" />
+    <Compile Include="Service\StadiumService.cs" />
     <Compile Include="Stadium.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Service\StadiumService.cs" />
-    <Compile Include="ViewModel\ClubViewModel.cs" />
-    <Compile Include="ViewModel\MatchViewModel.cs" />
-    <Compile Include="ViewModel\ReffereViewModel.cs" />
-    <Compile Include="ViewModel\StadiumViewModel.cs" />
     <Compile Include="Ticket.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -134,6 +130,10 @@
     <Compile Include="TrainingStaff.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ClubViewModel.cs" />
+    <Compile Include="ViewModel\MatchViewModel.cs" />
+    <Compile Include="ViewModel\ReffereViewModel.cs" />
+    <Compile Include="ViewModel\StadiumViewModel.cs" />
     <Compile Include="ViewModel\TicketViewModel.cs" />
     <Compile Include="ViewModel\Window\BaseViewModel.cs" />
     <Compile Include="ViewModel\Window\MainViewModel.cs" />
@@ -189,7 +189,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
@@ -211,6 +213,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\error.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

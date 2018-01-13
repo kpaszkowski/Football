@@ -29,7 +29,6 @@ namespace Football
         public string lastName { get; set; }
         public Nullable<int> recordID { get; set; }
         public double salary { get; set; }
-        public int isBusy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Match> Match { get; set; }

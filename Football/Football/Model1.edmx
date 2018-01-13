@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="baseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Club">
           <Key>
             <PropertyRef Name="id" />
@@ -56,7 +56,6 @@
           <Property Name="lastName" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="recordID" Type="int" />
           <Property Name="salary" Type="float" Nullable="false" />
-          <Property Name="isBusy" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Stadium">
           <Key>
@@ -74,7 +73,6 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="matchID" Type="int" Nullable="false" />
           <Property Name="PESEL" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Timetable">
           <Key>
@@ -324,7 +322,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbModelStoreContainer">
+        <EntityContainer Name="baseModelStoreContainer">
           <EntitySet Name="Club" EntityType="Self.Club" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Match" EntityType="Self.Match" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
@@ -412,7 +410,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="baseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Club">
           <Key>
             <PropertyRef Name="id" />
@@ -486,7 +484,6 @@
           <Property Name="lastName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="recordID" Type="Int32" />
           <Property Name="salary" Type="Double" Nullable="false" />
-          <Property Name="isBusy" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Match" Relationship="Self.Match_fk3" FromRole="Referee" ToRole="Match" />
           <NavigationProperty Name="Match1" Relationship="Self.Match_fk4" FromRole="Referee" ToRole="Match" />
           <NavigationProperty Name="Match2" Relationship="Self.Match_fk5" FromRole="Referee" ToRole="Match" />
@@ -512,7 +509,6 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="matchID" Type="Int32" Nullable="false" />
           <Property Name="PESEL" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Match" Relationship="Self.Ticket_fk0" FromRole="Ticket" ToRole="Match" />
         </EntityType>
         <EntityType Name="Timetable">
@@ -768,7 +764,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="baseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Club" EntityType="Self.Club" />
           <EntitySet Name="Match" EntityType="Self.Match" />
           <EntitySet Name="Player" EntityType="Self.Player" />
@@ -857,9 +853,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities1">
+        <EntityContainerMapping StorageEntityContainer="baseModelStoreContainer" CdmEntityContainer="baseEntities">
           <EntitySetMapping Name="Club">
-            <EntityTypeMapping TypeName="dbModel.Club">
+            <EntityTypeMapping TypeName="baseModel.Club">
               <MappingFragment StoreEntitySet="Club">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -869,7 +865,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Match">
-            <EntityTypeMapping TypeName="dbModel.Match">
+            <EntityTypeMapping TypeName="baseModel.Match">
               <MappingFragment StoreEntitySet="Match">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="stadiumID" ColumnName="stadiumID" />
@@ -885,7 +881,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Player">
-            <EntityTypeMapping TypeName="dbModel.Player">
+            <EntityTypeMapping TypeName="baseModel.Player">
               <MappingFragment StoreEntitySet="Player">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
@@ -896,7 +892,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Record">
-            <EntityTypeMapping TypeName="dbModel.Record">
+            <EntityTypeMapping TypeName="baseModel.Record">
               <MappingFragment StoreEntitySet="Record">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="type" ColumnName="type" />
@@ -905,19 +901,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Referee">
-            <EntityTypeMapping TypeName="dbModel.Referee">
+            <EntityTypeMapping TypeName="baseModel.Referee">
               <MappingFragment StoreEntitySet="Referee">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="lastName" ColumnName="lastName" />
                 <ScalarProperty Name="recordID" ColumnName="recordID" />
                 <ScalarProperty Name="salary" ColumnName="salary" />
-                <ScalarProperty Name="isBusy" ColumnName="isBusy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Stadium">
-            <EntityTypeMapping TypeName="dbModel.Stadium">
+            <EntityTypeMapping TypeName="baseModel.Stadium">
               <MappingFragment StoreEntitySet="Stadium">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -927,17 +922,16 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ticket">
-            <EntityTypeMapping TypeName="dbModel.Ticket">
+            <EntityTypeMapping TypeName="baseModel.Ticket">
               <MappingFragment StoreEntitySet="Ticket">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="matchID" ColumnName="matchID" />
                 <ScalarProperty Name="PESEL" ColumnName="PESEL" />
-                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Timetable">
-            <EntityTypeMapping TypeName="dbModel.Timetable">
+            <EntityTypeMapping TypeName="baseModel.Timetable">
               <MappingFragment StoreEntitySet="Timetable">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="matchID" ColumnName="matchID" />
@@ -946,7 +940,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TrainingStaff">
-            <EntityTypeMapping TypeName="dbModel.TrainingStaff">
+            <EntityTypeMapping TypeName="baseModel.TrainingStaff">
               <MappingFragment StoreEntitySet="TrainingStaff">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
@@ -959,7 +953,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Winners">
-            <EntityTypeMapping TypeName="dbModel.Winners">
+            <EntityTypeMapping TypeName="baseModel.Winners">
               <MappingFragment StoreEntitySet="Winners">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="clubID" ColumnName="clubID" />
