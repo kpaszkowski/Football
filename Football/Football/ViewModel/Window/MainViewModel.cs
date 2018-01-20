@@ -818,12 +818,12 @@ namespace Football.ViewModel.Window
                 return;
             }
             var values = (object[])parameter;
-            int matchTimetable = Int32.Parse(values[0].ToString());
-            //MatchViewModel newMatch = (MatchViewModel)values[0];
-            int refereeTimetable = Int32.Parse(values[1].ToString());
-            //ReffereViewModel newReferee = (ReffereViewModel)values[1];
+            //int matchTimetable = Int32.Parse(values[0].ToString());
+            MatchViewModel currentMatch = (MatchViewModel)values[0];
+            //int refereeTimetable = Int32.Parse(values[1].ToString());
+            ReffereViewModel currentReferee = (ReffereViewModel)values[1];
             TimetableViewModel currentTimetable = (TimetableViewModel)values[2];
-            if (timetableService.EditTimetable(matchTimetable, refereeTimetable, currentTimetable.ID))
+            if (timetableService.EditTimetable(currentMatch.ID, currentReferee.ID, currentTimetable.ID))
             {
                 RefereshAll();
             }
