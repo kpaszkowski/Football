@@ -285,6 +285,55 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Winners">
+                <ScrollViewer>
+                    <Grid>
+
+                        <StackPanel Grid.Column="1">
+                            <Label>Year</Label>
+                            <TextBox Name="tbWinnersYear" Text="WinnersYear"/>
+                            <Label>Club</Label>
+                            <ComboBox Name="cbHWinnersClub" ItemsSource="{Binding club}" SelectedItem="{Binding SelectedClub}" DisplayMemberPath="Name"/>
+                            <Label>Goals Scored</Label>
+                            <TextBox Name="tbWinnersGoalsScored" Text="GoalsScored"/>
+                            <Label>Goals Lost</Label>
+                            <TextBox Name="tbWinnersGoalsLost" Text="GoalsLost"/>
+                            <Label>Matches Won</Label>
+                            <TextBox Name="tbWinnersMatchesWon" Text="MatchesWon"/>
+                            <Label>Matches Lost</Label>
+                            <TextBox Name="tbWinnersMatchesLost" Text="MatchesLost"/>
+
+                            <Button Content="Add winners" Command="{Binding AddWinnersCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbWinnersYear"/>
+                                        <Binding Path="SelectedClub"/>
+                                        <Binding Path="Text" ElementName="tbWinnersGoalsScored"/>
+                                        <Binding Path="Text" ElementName="tbWinnersGoalsLost"/>
+                                        <Binding Path="Text" ElementName="tbWinnersMatchesWon"/>
+                                        <Binding Path="Text" ElementName="tbWinnersMatchesLost"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Edit winners" Command="{Binding EditWinnersCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbWinnersYear"/>
+                                        <Binding Path="SelectedClub"/>
+                                        <Binding Path="Text" ElementName="tbWinnersGoalsScored"/>
+                                        <Binding Path="Text" ElementName="tbWinnersGoalsLost"/>
+                                        <Binding Path="Text" ElementName="tbWinnersMatchesWon"/>
+                                        <Binding Path="Text" ElementName="tbWinnersMatchesLost"/>
+                                        <Binding Path="SelectedWinner"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Remove staff" Command="{Binding RemoveWinnersCommand}" CommandParameter="{Binding SelectedWinner}"/>
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding winners}" SelectedItem="{Binding SelectedWinner}" />
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

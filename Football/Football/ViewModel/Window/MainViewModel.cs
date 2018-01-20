@@ -19,6 +19,7 @@ namespace Football.ViewModel.Window
         ReffereService reffereService;
         PlayerService playerService;
         TrainingStaffService trainingStaffService;
+        WinnersService winnersService;
         #endregion
 
         #region Field
@@ -32,6 +33,7 @@ namespace Football.ViewModel.Window
         public ObservableCollection<ReffereViewModel> reffere { get; set; }
         public ObservableCollection<PlayerViewModel> player { get; set; }
         public ObservableCollection<TrainingStaffViewModel> trainingStaff { get; set; }
+        public ObservableCollection<WinnersViewModel> winners { get; set; }
 
         #endregion
 
@@ -214,6 +216,23 @@ namespace Football.ViewModel.Window
             }
         }
 
+        object _SelectedWinner;
+        public object SelectedWinner
+        {
+            get
+            {
+                return _SelectedWinner;
+            }
+            set
+            {
+                if (_SelectedWinner != value)
+                {
+                    _SelectedWinner = value;
+                    RaisePropertyChanged("SelectedWinner");
+                }
+            }
+        }
+
         #endregion
 
         #region Relay Command
@@ -246,6 +265,10 @@ namespace Football.ViewModel.Window
         public RelayCommand RemoveStaffCommand { get; set; }
         public RelayCommand EditStaffCommand { get; set; }
 
+        public RelayCommand AddWinnersCommand { get; set; }
+        public RelayCommand RemoveWinnersCommand { get; set; }
+        public RelayCommand EditWinnersCommand { get; set; }
+
 
         #endregion
 
@@ -260,6 +283,7 @@ namespace Football.ViewModel.Window
             UpdateMatchGrid();
             UpdateTicketGrid();
             UpdateStaffGrid();
+            UpdateWinnersGrid(); 
         }
 
         #region Reffere
@@ -688,7 +712,7 @@ namespace Football.ViewModel.Window
             string lastName = values[1].ToString();
             ClubViewModel currentClub = (ClubViewModel)values[2];
             TrainingStaffViewModel currentStaff = (TrainingStaffViewModel)values[3];
-            int age = (int)values[4];
+            int age = Int32.Parse(values[4].ToString());
             string duty = values[5].ToString();
             if (trainingStaffService.EditStaff(firstName, lastName, currentClub.ID, currentStaff.ID, age, duty))
             {
@@ -726,7 +750,7 @@ namespace Football.ViewModel.Window
             string firstName = values[0].ToString();
             string lastName = values[1].ToString();
             ClubViewModel currentClub = (ClubViewModel)values[2];
-            int age = (int) values[3];
+            int age = Int32.Parse(values[3].ToString());
             string duty = values[4].ToString();
             if (trainingStaffService.AddStaff(firstName, lastName, currentClub.ID, age, duty))
             {
@@ -747,6 +771,81 @@ namespace Football.ViewModel.Window
 
         #endregion
 
+        #region Winners
+
+        private void EditWinners(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            ClubViewModel currentClub = (ClubViewModel)values[1];
+            string year = values[0].ToString();
+            int wonMatches = Int32.Parse(values[4].ToString());
+            int lostMatches = Int32.Parse(values[5].ToString());
+            int goalsScored = Int32.Parse(values[2].ToString());
+            int goalsLost = Int32.Parse(values[3].ToString());
+            WinnersViewModel currentWinner = (WinnersViewModel)values[5];
+            if (winnersService.EditWinners(currentClub.ID, year, wonMatches, lostMatches, goalsScored, goalsLost, currentWinner.ID))
+            {
+                RefereshAll();
+            }
+        }
+
+        private void RemoveWinners(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano rekordu");
+                return;
+            }
+            WinnersViewModel currentWinner = (WinnersViewModel)parameter;
+            if (winnersService.RemoveWinners(currentWinner.ID))
+            {
+                RefereshAll();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć rekordu");
+                return;
+            }
+        }
+
+        private void AddWinners(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            ClubViewModel currentClub = (ClubViewModel)values[0];
+            string year = values[1].ToString();
+            int wonMatches = Int32.Parse(values[2].ToString());
+            int lostMatches = Int32.Parse(values[3].ToString());
+            int goalsScored = Int32.Parse(values[4].ToString());
+            int goalsLost = Int32.Parse(values[4].ToString());
+            if (winnersService.AddWinners(currentClub.ID, year, wonMatches, lostMatches, goalsScored, goalsLost))
+            {
+                RefereshAll();
+            }
+
+        }
+
+        private void UpdateWinnersGrid()
+        {
+            var w = winnersService.GetAllWinners();
+            winners.Clear();
+            foreach (WinnersViewModel item in w)
+            {
+                winners.Add(item);
+            }
+        }
+
+#endregion
+
         #region Other
 
         private void RefereshAll()
@@ -758,6 +857,7 @@ namespace Football.ViewModel.Window
             UpdateTicketGrid();
             UpdatePlayerGrid();
             UpdateStaffGrid();
+            UpdateWinnersGrid();
         }
 
         private void InitializeCommands()
@@ -790,6 +890,10 @@ namespace Football.ViewModel.Window
             RemoveStaffCommand = new RelayCommand(RemoveStaff);
             EditStaffCommand = new RelayCommand(EditStaff);
 
+            AddWinnersCommand = new RelayCommand(AddWinners);
+            RemoveWinnersCommand = new RelayCommand(RemoveWinners);
+            EditWinnersCommand = new RelayCommand(EditWinners);
+
             stadium = new ObservableCollection<StadiumViewModel>();
             club = new ObservableCollection<ClubViewModel>();
             match = new ObservableCollection<MatchViewModel>();
@@ -797,6 +901,7 @@ namespace Football.ViewModel.Window
             reffere = new ObservableCollection<ReffereViewModel>();
             player = new ObservableCollection<PlayerViewModel>();
             trainingStaff = new ObservableCollection<TrainingStaffViewModel>();
+            winners = new ObservableCollection<WinnersViewModel>();
 
             stadiumService = new StadiumService();
             clubService = new ClubService();
@@ -805,6 +910,7 @@ namespace Football.ViewModel.Window
             reffereService = new ReffereService();
             playerService = new PlayerService();
             trainingStaffService = new TrainingStaffService();
+            winnersService = new WinnersService();
         }
 
         public void ShowInfoWindow(string info)
