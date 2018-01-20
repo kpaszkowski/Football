@@ -18,6 +18,7 @@ namespace Football.ViewModel.Window
         MatchService matchService;
         ReffereService reffereService;
         PlayerService playerService;
+        TrainingStaffService trainingStaffService;
         #endregion
 
         #region Field
@@ -30,6 +31,7 @@ namespace Football.ViewModel.Window
         public ObservableCollection<MatchViewModel> match { get; set; }
         public ObservableCollection<ReffereViewModel> reffere { get; set; }
         public ObservableCollection<PlayerViewModel> player { get; set; }
+        public ObservableCollection<TrainingStaffViewModel> trainingStaff { get; set; }
 
         #endregion
 
@@ -195,6 +197,22 @@ namespace Football.ViewModel.Window
                 }
             }
         }
+        object _SelectedStaff;
+        public object SelectedStaff
+        {
+            get
+            {
+                return _SelectedStaff;
+            }
+            set
+            {
+                if (_SelectedStaff != value)
+                {
+                    _SelectedStaff = value;
+                    RaisePropertyChanged("SelectedStaff");
+                }
+            }
+        }
 
         #endregion
 
@@ -224,6 +242,10 @@ namespace Football.ViewModel.Window
         public RelayCommand RemovePlayerCommand { get; set; }
         public RelayCommand EditPlayerCommand { get; set; }
 
+        public RelayCommand AddStaffCommand { get; set; }
+        public RelayCommand RemoveStaffCommand { get; set; }
+        public RelayCommand EditStaffCommand { get; set; }
+
 
         #endregion
 
@@ -237,6 +259,7 @@ namespace Football.ViewModel.Window
             UpdateReffereGrid();
             UpdateMatchGrid();
             UpdateTicketGrid();
+            UpdateStaffGrid();
         }
 
         #region Reffere
@@ -651,6 +674,79 @@ namespace Football.ViewModel.Window
 
         #endregion
 
+        #region Staff
+
+        private void EditStaff(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            TrainingStaffViewModel currentStaff = (TrainingStaffViewModel)values[3];
+            int age = (int)values[4];
+            string duty = values[5].ToString();
+            if (trainingStaffService.EditStaff(firstName, lastName, currentClub.ID, currentStaff.ID, age, duty))
+            {
+                RefereshAll();
+            }
+        }
+
+        private void RemoveStaff(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano członka sztabu");
+                return;
+            }
+            TrainingStaffViewModel currentStaff = (TrainingStaffViewModel)parameter;
+            if (trainingStaffService.RemoveStaff(currentStaff.ID))
+            {
+                RefereshAll();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć członka sztabu");
+                return;
+            }
+        }
+
+        private void AddStaff(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            int age = (int) values[3];
+            string duty = values[4].ToString();
+            if (trainingStaffService.AddStaff(firstName, lastName, currentClub.ID, age, duty))
+            {
+                RefereshAll();
+            }
+
+        }
+
+        private void UpdateStaffGrid()
+        {
+           var s = trainingStaffService.GetAllStaff();
+           trainingStaff.Clear();
+           foreach (TrainingStaffViewModel item in s)
+             {
+                 trainingStaff.Add(item);
+             }
+        }
+
+        #endregion
+
         #region Other
 
         private void RefereshAll()
@@ -661,6 +757,7 @@ namespace Football.ViewModel.Window
             UpdateStadiumGrid();
             UpdateTicketGrid();
             UpdatePlayerGrid();
+            UpdateStaffGrid();
         }
 
         private void InitializeCommands()
@@ -689,12 +786,17 @@ namespace Football.ViewModel.Window
             RemovePlayerCommand = new RelayCommand(RemovePlayer);
             EditPlayerCommand = new RelayCommand(EditPlayer);
 
+            AddStaffCommand = new RelayCommand(AddStaff);
+            RemoveStaffCommand = new RelayCommand(RemoveStaff);
+            EditStaffCommand = new RelayCommand(EditStaff);
+
             stadium = new ObservableCollection<StadiumViewModel>();
             club = new ObservableCollection<ClubViewModel>();
             match = new ObservableCollection<MatchViewModel>();
             ticket = new ObservableCollection<TicketViewModel>();
             reffere = new ObservableCollection<ReffereViewModel>();
             player = new ObservableCollection<PlayerViewModel>();
+            trainingStaff = new ObservableCollection<TrainingStaffViewModel>();
 
             stadiumService = new StadiumService();
             clubService = new ClubService();
@@ -702,6 +804,7 @@ namespace Football.ViewModel.Window
             matchService = new MatchService();
             reffereService = new ReffereService();
             playerService = new PlayerService();
+            trainingStaffService = new TrainingStaffService();
         }
 
         public void ShowInfoWindow(string info)

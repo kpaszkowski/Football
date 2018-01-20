@@ -241,6 +241,50 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Training Staff">
+                <ScrollViewer>
+                    <Grid>
+
+                        <StackPanel Grid.Column="1">
+                            <Label>First Name</Label>
+                            <TextBox Name="tbStaffFirstName" Text="StaffFirstName"/>
+                            <Label>Last Name</Label>
+                            <TextBox Name="tbStaffLastName" Text="StaffLastName"/>
+                            <Label>Club</Label>
+                            <ComboBox Name="cbHStafflub" ItemsSource="{Binding club}" SelectedItem="{Binding SelectedClub}" DisplayMemberPath="Name"/>
+                            <Label>Age</Label>
+                            <TextBox Name="tbStaffAge" Text="StaffAge"/>
+                            <Label>Duty</Label>
+                            <TextBox Name="tbStaffDuty" Text="StaffDuty"/>
+                            <Button Content="Add staff" Command="{Binding AddStaffCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbStaffFirstName"/>
+                                        <Binding Path="Text" ElementName="tbStaffLastName"/>
+                                        <Binding Path="SelectedClub"/>
+                                        <Binding Path="Text" ElementName="tbStaffAge"/>
+                                        <Binding Path="Text" ElementName="tbStaffDuty"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Edit staff" Command="{Binding EditStaffCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbStaffFirstName"/>
+                                        <Binding Path="Text" ElementName="tbStaffLastName"/>
+                                        <Binding Path="SelectedClub"/>
+                                        <Binding Path="SelectedStaff"/>
+                                        <Binding Path="Text" ElementName="tbStaffAge"/>
+                                        <Binding Path="Text" ElementName="tbStaffDuty"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Remove staff" Command="{Binding RemoveStaffCommand}" CommandParameter="{Binding SelectedStaff}"/>
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding staff}" SelectedItem="{Binding SelectedStaff}" />
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
