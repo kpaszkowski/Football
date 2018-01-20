@@ -18,6 +18,8 @@ namespace Football.ViewModel.Window
         MatchService matchService;
         ReffereService reffereService;
         PlayerService playerService;
+        RecordService recordService;
+        TimetableService timetableService;
         #endregion
 
         #region Field
@@ -30,10 +32,12 @@ namespace Football.ViewModel.Window
         public ObservableCollection<MatchViewModel> match { get; set; }
         public ObservableCollection<ReffereViewModel> reffere { get; set; }
         public ObservableCollection<PlayerViewModel> player { get; set; }
+        public ObservableCollection<RecordViewModel> record { get; set; }
+        public ObservableCollection<TimetableViewModel> timetable { get; set; }
 
         #endregion
 
-        #region Selected FIelds
+        #region Selected Fields
 
         object _SelectedStadium;
         public object SelectedStadium
@@ -112,6 +116,22 @@ namespace Football.ViewModel.Window
                 {
                     _SelectedTicket = value;
                     RaisePropertyChanged("SelectedTicket");
+                }
+            }
+        }
+        object _SelectedTimetable;
+        public object SelectedTimetable
+        {
+            get
+            {
+                return _SelectedTimetable;
+            }
+            set
+            {
+                if (_SelectedTimetable != value)
+                {
+                    _SelectedTimetable = value;
+                    RaisePropertyChanged("SelectedTimetable");
                 }
             }
         }
@@ -196,6 +216,23 @@ namespace Football.ViewModel.Window
             }
         }
 
+        object _SelectedRecord;
+        public object SelectedRecord
+        {
+            get
+            {
+                return _SelectedRecord;
+            }
+            set
+            {
+                if (_SelectedRecord != value)
+                {
+                    _SelectedRecord = value;
+                    RaisePropertyChanged("SelectedRecord");
+                }
+            }
+        }
+
         #endregion
 
         #region Relay Command
@@ -224,6 +261,14 @@ namespace Football.ViewModel.Window
         public RelayCommand RemovePlayerCommand { get; set; }
         public RelayCommand EditPlayerCommand { get; set; }
 
+        public RelayCommand AddRecordCommand { get; set; }
+        public RelayCommand RemoveRecordCommand { get; set; }
+        public RelayCommand EditRecordCommand { get; set; }
+
+        public RelayCommand AddTimetableCommand { get; set; }
+        public RelayCommand RemoveTimetableCommand { get; set; }
+        public RelayCommand EditTimetableCommand { get; set; }
+
 
         #endregion
 
@@ -237,6 +282,8 @@ namespace Football.ViewModel.Window
             UpdateReffereGrid();
             UpdateMatchGrid();
             UpdateTicketGrid();
+            UpdateRecordGrid();
+            UpdateTimetableGrid();
         }
 
         #region Reffere
@@ -651,6 +698,142 @@ namespace Football.ViewModel.Window
 
         #endregion
 
+        #region Record
+
+        void AddRecord(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            Record r = new Record
+            {
+                type = values[0].ToString(),
+                name = values[1].ToString()
+            };
+            recordService.AddRecord(r);
+            UpdateRecordGrid();
+        }
+
+        void RemoveRecord(object parameter)//usuwanie po wyszukiwaniu
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano rekordu");
+                return;
+            }
+            var currentRecord = (RecordViewModel)parameter;
+            if (recordService.RemoveRecord(currentRecord.ID))
+            {
+                UpdateRecordGrid();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć rekordu");
+                return;
+            }
+
+        }
+
+        void EditRecord(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string newType = values[0].ToString();
+            string newName = values[1].ToString();
+            RecordViewModel currentRecord = (RecordViewModel)values[2];
+            if (recordService.EditRecord(newType, newName, currentRecord.ID))
+            {
+                RefereshAll();
+            }
+        }
+
+        void UpdateRecordGrid()//Bieda update , czysci grida i od nowa laduje
+        {
+            var r = recordService.GetAllRecord();
+            record.Clear();
+            foreach (Record item in r)
+            {
+                record.Add(new RecordViewModel { ID = item.id, Type = item.type, Name = item.name });
+                //record.Add(item);
+            }
+        }
+
+        #endregion
+
+        #region Timetable
+
+        private void RemoveTimetable(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano terminarza");
+                return;
+            }
+            var currentTimetable = (TimetableViewModel)parameter;
+            if (timetableService.RemoveTimetable(currentTimetable.ID))
+            {
+                UpdateTimetableGrid();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć terminarz");
+                return;
+            }
+
+        }
+
+        private void AddTimetable(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            MatchViewModel matchTimetable = (MatchViewModel)values[0];
+            ReffereViewModel refereeTimetable = (ReffereViewModel)values[1];
+            timetableService.AddTimetable(matchTimetable.ID, refereeTimetable.ID);
+            UpdateTimetableGrid();
+
+        }
+
+        void EditTimetable(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            int matchTimetable = Int32.Parse(values[0].ToString());
+            //MatchViewModel newMatch = (MatchViewModel)values[0];
+            int refereeTimetable = Int32.Parse(values[1].ToString());
+            //ReffereViewModel newReferee = (ReffereViewModel)values[1];
+            TimetableViewModel currentTimetable = (TimetableViewModel)values[2];
+            if (timetableService.EditTimetable(matchTimetable, refereeTimetable, currentTimetable.ID))
+            {
+                RefereshAll();
+            }
+        }
+
+        void UpdateTimetableGrid()
+        {
+            var t = timetableService.GetAllTimetable();
+            timetable.Clear();
+            foreach (TimetableViewModel item in t)
+            {
+                timetable.Add(item);
+            }
+        }
+        #endregion
+
         #region Other
 
         private void RefereshAll()
@@ -661,6 +844,8 @@ namespace Football.ViewModel.Window
             UpdateStadiumGrid();
             UpdateTicketGrid();
             UpdatePlayerGrid();
+            UpdateRecordGrid();
+            UpdateTimetableGrid();
         }
 
         private void InitializeCommands()
@@ -689,12 +874,22 @@ namespace Football.ViewModel.Window
             RemovePlayerCommand = new RelayCommand(RemovePlayer);
             EditPlayerCommand = new RelayCommand(EditPlayer);
 
+            AddRecordCommand = new RelayCommand(AddRecord);
+            RemoveRecordCommand = new RelayCommand(RemoveRecord);
+            EditRecordCommand = new RelayCommand(EditRecord);
+
+            AddTimetableCommand = new RelayCommand(AddTimetable);
+            RemoveTimetableCommand = new RelayCommand(RemoveTimetable);
+            EditTimetableCommand = new RelayCommand(EditTimetable);
+
             stadium = new ObservableCollection<StadiumViewModel>();
             club = new ObservableCollection<ClubViewModel>();
             match = new ObservableCollection<MatchViewModel>();
             ticket = new ObservableCollection<TicketViewModel>();
             reffere = new ObservableCollection<ReffereViewModel>();
             player = new ObservableCollection<PlayerViewModel>();
+            record = new ObservableCollection<RecordViewModel>();
+            timetable = new ObservableCollection<TimetableViewModel>();
 
             stadiumService = new StadiumService();
             clubService = new ClubService();
@@ -702,6 +897,8 @@ namespace Football.ViewModel.Window
             matchService = new MatchService();
             reffereService = new ReffereService();
             playerService = new PlayerService();
+            recordService = new RecordService();
+            timetableService = new TimetableService();
         }
 
         public void ShowInfoWindow(string info)

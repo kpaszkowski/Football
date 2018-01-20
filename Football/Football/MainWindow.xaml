@@ -241,6 +241,68 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Timetable and Record">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--Timetable-->
+                        <StackPanel Grid.Column="0">
+                            <Label>Timetable match</Label>
+                            <ComboBox Name="cbTimetableMatch" ItemsSource="{Binding match}" SelectedItem="{Binding SelectedMatch}" DisplayMemberPath="ID"/>
+                            <Label>Timetable referee</Label>
+                            <ComboBox Name="cbTimetableReferee" ItemsSource="{Binding reffere}" SelectedItem="{Binding SelectedReffere}" DisplayMemberPath="ID"/>
+                            <Button Content="Add to timetable" Command="{Binding AddTimetableCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="SelectedMatch"/>
+                                        <Binding Path="SelectedReffere"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Edit timetable" Command="{Binding EditTimetableCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="SelectedMatch"/>
+                                        <Binding Path="SelectedReffere"/>
+                                        <Binding Path="SelectedTimetable"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Remove from timetable" Command="{Binding RemoveTimetableCommand}" CommandParameter="{Binding SelectedTimetable}"/>
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding timetable}" SelectedItem="{Binding SelectedTimetable}"/>
+                        </StackPanel>
+                        <!--Record-->
+                        <StackPanel Grid.Column="1">
+                            <Label>Record type</Label>
+                            <TextBox Name="tbRecordType" Text="Type"/>
+                            <Label>Record name</Label>
+                            <TextBox Name="tbRecordName" Text="Name"/>
+                            <Button Content="Add record" Command="{Binding AddRecordCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbRecordType"/>
+                                        <Binding Path="Text" ElementName="tbRecordName"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Edit record" Command="{Binding EditRecordCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource Converter}">
+                                        <Binding Path="Text" ElementName="tbRecordType"/>
+                                        <Binding Path="Text" ElementName="tbRecordName"/>
+                                        <Binding Path="SelectedRecord"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Content="Remove record" Command="{Binding RemoveRecordCommand}" CommandParameter="{Binding SelectedRecord}"/>
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding record}" SelectedItem="{Binding SelectedRecord}"/>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
