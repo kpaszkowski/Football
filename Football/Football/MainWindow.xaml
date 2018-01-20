@@ -59,6 +59,7 @@
                                     <MultiBinding Converter="{StaticResource Converter}">
                                         <Binding Path="Text" ElementName="tbNameClub"/>
                                         <Binding Path="SelectedStadium"/>
+                                        <Binding Path="SelectedRecord"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
@@ -67,6 +68,7 @@
                                     <MultiBinding Converter="{StaticResource Converter}">
                                         <Binding Path="Text" ElementName="tbNameClub"/>
                                         <Binding Path="SelectedStadium"/>
+                                        <Binding Path="SelectedRecord"/>
                                         <Binding Path="SelectedClub"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
@@ -76,6 +78,8 @@
                             <TextBox Name="tbNameClub" Text="Name"/>
                             <Label>Club Stadium</Label>
                             <ComboBox Name="selectedstadium" ItemsSource="{Binding stadium}" SelectedItem="{Binding SelectedStadium}" DisplayMemberPath="Name"/>
+                            <Label>Club Record</Label>
+                            <ComboBox Name="selectedrecord" ItemsSource="{Binding record}" SelectedItem="{Binding SelectedRecord}" DisplayMemberPath="ID"/>
                             <DataGrid IsReadOnly="True" ItemsSource="{Binding club}" SelectedItem="{Binding SelectedClub}"/>
                         </StackPanel>
                     </Grid>
@@ -186,12 +190,15 @@
                             <TextBox Name="tbReffereLastName" Text="ReffereLastName"/>
                             <Label>Salary</Label>
                             <TextBox Name="tbReffereSalaryName" Text="5000"/>
+                            <Label>Record</Label>
+                            <ComboBox Name="cbRefereeRecord" ItemsSource="{Binding record}" SelectedItem="{Binding SelectedRecord}" DisplayMemberPath="ID"/>
                             <Button Content="Add referee" Command="{Binding AddReffereCommand}">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{StaticResource Converter}">
                                         <Binding Path="Text" ElementName="tbReffereFirstName"/>
                                         <Binding Path="Text" ElementName="tbReffereLastName"/>
                                         <Binding Path="Text" ElementName="tbReffereSalaryName"/>
+                                        <Binding Path="SelectedRecord"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
@@ -201,6 +208,7 @@
                                         <Binding Path="Text" ElementName="tbReffereFirstName"/>
                                         <Binding Path="Text" ElementName="tbReffereLastName"/>
                                         <Binding Path="Text" ElementName="tbReffereSalaryName"/>
+                                        <Binding Path="SelectedRecord"/>
                                         <Binding Path="SelectedReffere"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
@@ -216,12 +224,15 @@
                             <TextBox Name="tbPlayerLastName" Text="PlayerLastName"/>
                             <Label>Club</Label>
                             <ComboBox Name="cbHPlayerClub" ItemsSource="{Binding club}" SelectedItem="{Binding SelectedClub}" DisplayMemberPath="Name"/>
+                            <Label>Record</Label>
+                            <ComboBox Name="cbHPlayerRecord" ItemsSource="{Binding record}" SelectedItem="{Binding SelectedRecord}" DisplayMemberPath="ID"/>
                             <Button Content="Add player" Command="{Binding AddPlayerCommand}">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{StaticResource Converter}">
                                         <Binding Path="Text" ElementName="tbPlayerFirstName"/>
                                         <Binding Path="Text" ElementName="tbPlayerLastName"/>
                                         <Binding Path="SelectedClub"/>
+                                        <Binding Path="SelectedRecord"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
@@ -231,6 +242,7 @@
                                         <Binding Path="Text" ElementName="tbPlayerFirstName"/>
                                         <Binding Path="Text" ElementName="tbPlayerLastName"/>
                                         <Binding Path="SelectedClub"/>
+                                        <Binding Path="SelectedRecord"/>
                                         <Binding Path="SelectedPlayer"/>
                                     </MultiBinding>
                                 </Button.CommandParameter>

@@ -34,17 +34,19 @@ namespace Football
         //    }
         //}
 
-        public void AddClub(string name, long stadiumID)
+        public void AddClub(string name, long stadiumID, long recordID)
         {
             try
             {
                 using (dbEntities1 context = new dbEntities1())
                 {
                     Stadium stadium = context.Stadium.FirstOrDefault(x => x.id == stadiumID);
+                    Record record = context.Record.FirstOrDefault(x => x.id == recordID);
                     Club club = new Club
                     {
                         name = name,
                         Stadium = stadium,
+                        Record = record
                     };
                     context.Club.Add(club);
                     context.SaveChanges();
@@ -113,7 +115,7 @@ namespace Football
 
                     foreach (Club item in clubList)
                     {
-                        list.Add(new ClubViewModel { ID = item.id, Name = item.name, Stadium_Name = item.Stadium!=null? item.Stadium.name:String.Empty });
+                        list.Add(new ClubViewModel { ID = item.id, Name = item.name, Stadium_Name = item.Stadium!=null? item.Stadium.name:String.Empty, RecordID = item.Record!=null? item.Record.id:0 });
                     }
 
                     return list;
@@ -125,7 +127,7 @@ namespace Football
             }
         }
 
-        internal bool EditClub(string newName, int newStadiumID, long oldClubID)
+        internal bool EditClub(string newName, int newStadiumID, int newRecordID, long oldClubID)
         {
             try
             {
@@ -134,6 +136,7 @@ namespace Football
                     Club club = context.Club.FirstOrDefault(x => x.id == oldClubID);
                     club.name = newName;
                     club.stadiumID = newStadiumID;
+                    club.recordID = newRecordID;
                     context.Entry(club).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     return true;

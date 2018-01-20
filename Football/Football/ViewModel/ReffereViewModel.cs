@@ -74,6 +74,23 @@ namespace Football.ViewModel
             }
         }
 
+        int _RecordID;
+        public int RecordID
+        {
+            get
+            {
+                return _RecordID;
+            }
+            set
+            {
+                if (_RecordID != value)
+                {
+                    _RecordID = value;
+                    RaisePropertyChanged("RecordID");
+                }
+            }
+        }
+
         void RaisePropertyChanged(string prop)
         {
             if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }

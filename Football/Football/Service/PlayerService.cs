@@ -21,7 +21,7 @@ namespace Football.Service
 
                     foreach (Player item in playerList)
                     {
-                        list.Add(new PlayerViewModel { ID = item.id, FirstName = item.firstName, LastName = item.lastName,ClubName=item.Club.name });
+                        list.Add(new PlayerViewModel { ID = item.id, FirstName = item.firstName, LastName = item.lastName,ClubName=item.Club.name, RecordID = item.Record != null ? item.Record.id : 0 });
                     }
 
                     return list;
@@ -33,7 +33,7 @@ namespace Football.Service
             }
         }
 
-        internal bool AddPlayer(string firstName, string lastName, int clubID)
+        internal bool AddPlayer(string firstName, string lastName, int clubID, int recordID)
         {
             try
             {
@@ -44,6 +44,7 @@ namespace Football.Service
                         firstName = firstName,
                         lastName = lastName,
                         clubID=clubID,
+                        recordID=recordID
                     };
                     context.Player.Add(player);
                     context.SaveChanges();
@@ -85,7 +86,7 @@ namespace Football.Service
             return true;
         }
 
-        internal bool EditPlayer(string firstName, string lastName, int clubID, int playerID)
+        internal bool EditPlayer(string firstName, string lastName, int clubID, int recordID, int playerID)
         {
             try
             {
@@ -95,6 +96,7 @@ namespace Football.Service
                     player.firstName = firstName;
                     player.lastName = lastName;
                     player.clubID = clubID;
+                    player.recordID = recordID;
                     context.Entry(player).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     return true;

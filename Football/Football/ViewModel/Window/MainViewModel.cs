@@ -316,7 +316,8 @@ namespace Football.ViewModel.Window
             }
             var values = (object[])parameter;
             double salary = double.Parse((string)values[2].ToString());
-            reffereService.AddReffere(values[0].ToString(), values[1].ToString(), salary);
+            RecordViewModel recordReferee = (RecordViewModel)values[3];
+            reffereService.AddReffere(values[0].ToString(), values[1].ToString(), salary, recordReferee.ID);
             UpdateReffereGrid();
         }
 
@@ -331,8 +332,9 @@ namespace Football.ViewModel.Window
             string firstName = values[0].ToString();
             string lastName = values[1].ToString();
             double salary = double.Parse((string)values[2].ToString());
-            ReffereViewModel currentReferee = (ReffereViewModel)values[3];
-            if (reffereService.EditReferee(firstName,lastName,salary,currentReferee.ID))
+            RecordViewModel currentRecord = (RecordViewModel)values[3];
+            ReffereViewModel currentReferee = (ReffereViewModel)values[4];
+            if (reffereService.EditReferee(firstName,lastName,salary,currentRecord.ID,currentReferee.ID))
             {
                 RefereshAll();
             }
@@ -577,7 +579,8 @@ namespace Football.ViewModel.Window
             }
             var values = (object[])parameter;
             StadiumViewModel stadiumClub=(StadiumViewModel)values[1];
-            clubService.AddClub(values[0].ToString(), stadiumClub.ID);
+            RecordViewModel recordClub = (RecordViewModel)values[2];
+            clubService.AddClub(values[0].ToString(), stadiumClub.ID,recordClub.ID);
             UpdateClubGrid();
 
         }
@@ -611,14 +614,15 @@ namespace Football.ViewModel.Window
             var values = (object[])parameter;
             string newName = values[0].ToString();
             StadiumViewModel newStadium = (StadiumViewModel)values[1];
-            ClubViewModel currentClub = (ClubViewModel)values[2];
-            if (clubService.EditClub(newName,newStadium.ID,currentClub.ID))
+            RecordViewModel newRecord = (RecordViewModel)values[2];
+            ClubViewModel currentClub = (ClubViewModel)values[3];
+            if (clubService.EditClub(newName,newStadium.ID,newRecord.ID,currentClub.ID))
             {
                 RefereshAll();
             }
         }
 
-        void UpdateClubGrid()//Bieda update , czysci grida i od nowa laduje
+        void UpdateClubGrid()
         {
             var c = clubService.GetAllClub();
             club.Clear();
@@ -642,8 +646,9 @@ namespace Football.ViewModel.Window
             string firstName = values[0].ToString();
             string lastName = values[1].ToString();
             ClubViewModel currentClub = (ClubViewModel)values[2];
-            PlayerViewModel currentPlayer = (PlayerViewModel)values[3];
-            if (playerService.EditPlayer(firstName, lastName, currentClub.ID,currentPlayer.ID))
+            RecordViewModel currentRecord = (RecordViewModel)values[3];
+            PlayerViewModel currentPlayer = (PlayerViewModel)values[4];
+            if (playerService.EditPlayer(firstName, lastName, currentClub.ID,currentRecord.ID,currentPlayer.ID))
             {
                 RefereshAll();
             }
@@ -679,7 +684,8 @@ namespace Football.ViewModel.Window
             string firstName = values[0].ToString();
             string lastName = values[1].ToString();
             ClubViewModel currentClub = (ClubViewModel)values[2];
-            if (playerService.AddPlayer(firstName,lastName,currentClub.ID))
+            RecordViewModel currentRecord = (RecordViewModel)values[3];
+            if (playerService.AddPlayer(firstName,lastName,currentClub.ID,currentRecord.ID))
             {
                 RefereshAll();
             }

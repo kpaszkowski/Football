@@ -59,6 +59,23 @@ namespace Football.ViewModel
             }
         }
 
+        int _RecordID;
+        public int RecordID
+        {
+            get
+            {
+                return _RecordID;
+            }
+            set
+            {
+                if (_RecordID != value)
+                {
+                    _RecordID = value;
+                    RaisePropertyChanged("RecordID");
+                }
+            }
+        }
+
         public void UpdateFromModel(Club club)
         {
             //this.ID = club.id;

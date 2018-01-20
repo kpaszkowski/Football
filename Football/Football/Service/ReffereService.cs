@@ -9,7 +9,7 @@ namespace Football.Service
 {
     public class ReffereService
     {
-        public void AddReffere(string firstName,string lastName,double salary)
+        public void AddReffere(string firstName,string lastName,double salary, int recordID)
         {
             try
             {
@@ -19,7 +19,8 @@ namespace Football.Service
                     {
                         firstName = firstName,
                         lastName = lastName,
-                        salary=salary
+                        salary=salary,
+                        recordID=recordID
                     };
                     context.Referee.Add(referee);
                     context.SaveChanges();
@@ -85,7 +86,7 @@ namespace Football.Service
 
                     foreach (Referee item in reffereList)
                     {
-                        list.Add(new ReffereViewModel { ID = item.id,FirstName=item.firstName,LastName=item.lastName,Salary=item.salary });
+                        list.Add(new ReffereViewModel { ID = item.id,FirstName=item.firstName,LastName=item.lastName,Salary=item.salary, RecordID = item.Record != null ? item.Record.id : 0 });
                     }
 
                     return list;
@@ -97,7 +98,7 @@ namespace Football.Service
             }
         }
 
-        internal bool EditReferee(string firstName, string lastName, double salary, int iD)
+        internal bool EditReferee(string firstName, string lastName, double salary, int recordID, int iD)
         {
             try
             {
@@ -107,6 +108,7 @@ namespace Football.Service
                     referee.firstName = firstName;
                     referee.lastName = lastName;
                     referee.salary = salary;
+                    referee.recordID = recordID;
                     context.Entry(referee).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     return true;
