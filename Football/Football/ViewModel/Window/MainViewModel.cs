@@ -20,6 +20,8 @@ namespace Football.ViewModel.Window
         PlayerService playerService;
         RecordService recordService;
         TimetableService timetableService;
+        TrainingStaffService trainingStaffService;
+        WinnersService winnersService;
         #endregion
 
         #region Field
@@ -34,6 +36,9 @@ namespace Football.ViewModel.Window
         public ObservableCollection<PlayerViewModel> player { get; set; }
         public ObservableCollection<RecordViewModel> record { get; set; }
         public ObservableCollection<TimetableViewModel> timetable { get; set; }
+        public ObservableCollection<TrainingStaffViewModel> trainingStaff { get; set; }
+        public ObservableCollection<WinnersViewModel> winners { get; set; }
+
 
         #endregion
 
@@ -232,7 +237,39 @@ namespace Football.ViewModel.Window
                 }
             }
         }
+        object _SelectedStaff;
+        public object SelectedStaff
+        {
+            get
+            {
+                return _SelectedStaff;
+            }
+            set
+            {
+                if (_SelectedStaff != value)
+                {
+                    _SelectedStaff = value;
+                    RaisePropertyChanged("SelectedStaff");
+                }
+            }
+        }
 
+        object _SelectedWinner;
+        public object SelectedWinner
+        {
+            get
+            {
+                return _SelectedWinner;
+            }
+            set
+            {
+                if (_SelectedWinner != value)
+                {
+                    _SelectedWinner = value;
+                    RaisePropertyChanged("SelectedWinner");
+                }
+            }
+        }
         #endregion
 
         #region Relay Command
@@ -268,6 +305,14 @@ namespace Football.ViewModel.Window
         public RelayCommand AddTimetableCommand { get; set; }
         public RelayCommand RemoveTimetableCommand { get; set; }
         public RelayCommand EditTimetableCommand { get; set; }
+        
+        public RelayCommand AddStaffCommand { get; set; }
+        public RelayCommand RemoveStaffCommand { get; set; }
+        public RelayCommand EditStaffCommand { get; set; }
+
+        public RelayCommand AddWinnersCommand { get; set; }
+        public RelayCommand RemoveWinnersCommand { get; set; }
+        public RelayCommand EditWinnersCommand { get; set; }
 
 
         #endregion
@@ -284,6 +329,8 @@ namespace Football.ViewModel.Window
             UpdateTicketGrid();
             UpdateRecordGrid();
             UpdateTimetableGrid();
+            UpdateStaffGrid();
+            UpdateWinnersGrid(); 
         }
 
         #region Reffere
@@ -840,6 +887,156 @@ namespace Football.ViewModel.Window
         }
         #endregion
 
+        #region Staff
+
+        private void EditStaff(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            TrainingStaffViewModel currentStaff = (TrainingStaffViewModel)values[3];
+            int age = Int32.Parse(values[4].ToString());
+            string duty = values[5].ToString();
+            if (trainingStaffService.EditStaff(firstName, lastName, currentClub.ID, currentStaff.ID, age, duty))
+            {
+                RefereshAll();
+            }
+        }
+
+        private void RemoveStaff(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano członka sztabu");
+                return;
+            }
+            TrainingStaffViewModel currentStaff = (TrainingStaffViewModel)parameter;
+            if (trainingStaffService.RemoveStaff(currentStaff.ID))
+            {
+                RefereshAll();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć członka sztabu");
+                return;
+            }
+        }
+
+        private void AddStaff(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string firstName = values[0].ToString();
+            string lastName = values[1].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[2];
+            int age = Int32.Parse(values[3].ToString());
+            string duty = values[4].ToString();
+            if (trainingStaffService.AddStaff(firstName, lastName, currentClub.ID, age, duty))
+            {
+                RefereshAll();
+            }
+
+        }
+
+        private void UpdateStaffGrid()
+        {
+           var s = trainingStaffService.GetAllStaff();
+           trainingStaff.Clear();
+           foreach (TrainingStaffViewModel item in s)
+             {
+                 trainingStaff.Add(item);
+             }
+        }
+
+        #endregion
+
+        #region Winners
+
+        private void EditWinners(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            
+            string year = values[0].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[1];
+            int goalsScored = Int32.Parse(values[2].ToString());
+            int goalsLost = Int32.Parse(values[3].ToString());
+            int wonMatches = Int32.Parse(values[4].ToString());
+            int lostMatches = Int32.Parse(values[5].ToString());
+            WinnersViewModel currentWinner = (WinnersViewModel)values[6];
+
+            if (winnersService.EditWinners(currentClub.ID, year, wonMatches, lostMatches, goalsScored, goalsLost, currentWinner.ID))
+            {
+                RefereshAll();
+            }
+        }
+
+        private void RemoveWinners(object parameter)
+        {
+            if (!ValidateParamsAsObject(parameter))
+            {
+                ShowInfoWindow("Nie wybrano rekordu");
+                return;
+            }
+            WinnersViewModel currentWinner = (WinnersViewModel)parameter;
+            if (winnersService.RemoveWinners(currentWinner.ID))
+            {
+                RefereshAll();
+            }
+            else
+            {
+                ShowInfoWindow("Nie można usunąć rekordu");
+                return;
+            }
+        }
+
+        private void AddWinners(object parameter)
+        {
+            if (!ValidateParams(parameter))
+            {
+                ShowInfoWindow("Podaj poprawne dane");
+                return;
+            }
+            var values = (object[])parameter;
+            string year = values[0].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[1];
+            int wonMatches = Int32.Parse(values[2].ToString());
+            int lostMatches = Int32.Parse(values[3].ToString());
+            int goalsScored = Int32.Parse(values[4].ToString());
+            int goalsLost = Int32.Parse(values[4].ToString());
+            if (winnersService.AddWinners(currentClub.ID, year, wonMatches, lostMatches, goalsScored, goalsLost))
+            {
+                RefereshAll();
+            }
+
+        }
+
+        private void UpdateWinnersGrid()
+        {
+            var w = winnersService.GetAllWinners();
+            winners.Clear();
+            foreach (WinnersViewModel item in w)
+            {
+                winners.Add(item);
+            }
+        }
+
+        #endregion
+
         #region Other
 
         private void RefereshAll()
@@ -852,6 +1049,8 @@ namespace Football.ViewModel.Window
             UpdatePlayerGrid();
             UpdateRecordGrid();
             UpdateTimetableGrid();
+            UpdateStaffGrid();
+            UpdateWinnersGrid();
         }
 
         private void InitializeCommands()
@@ -887,6 +1086,14 @@ namespace Football.ViewModel.Window
             AddTimetableCommand = new RelayCommand(AddTimetable);
             RemoveTimetableCommand = new RelayCommand(RemoveTimetable);
             EditTimetableCommand = new RelayCommand(EditTimetable);
+            
+            AddStaffCommand = new RelayCommand(AddStaff);
+            RemoveStaffCommand = new RelayCommand(RemoveStaff);
+            EditStaffCommand = new RelayCommand(EditStaff);
+
+            AddWinnersCommand = new RelayCommand(AddWinners);
+            RemoveWinnersCommand = new RelayCommand(RemoveWinners);
+            EditWinnersCommand = new RelayCommand(EditWinners);
 
             stadium = new ObservableCollection<StadiumViewModel>();
             club = new ObservableCollection<ClubViewModel>();
@@ -896,6 +1103,8 @@ namespace Football.ViewModel.Window
             player = new ObservableCollection<PlayerViewModel>();
             record = new ObservableCollection<RecordViewModel>();
             timetable = new ObservableCollection<TimetableViewModel>();
+            trainingStaff = new ObservableCollection<TrainingStaffViewModel>();
+            winners = new ObservableCollection<WinnersViewModel>();
 
             stadiumService = new StadiumService();
             clubService = new ClubService();
@@ -905,6 +1114,9 @@ namespace Football.ViewModel.Window
             playerService = new PlayerService();
             recordService = new RecordService();
             timetableService = new TimetableService();
+            trainingStaffService = new TrainingStaffService();
+            winnersService = new WinnersService();
+            
         }
 
         public void ShowInfoWindow(string info)
