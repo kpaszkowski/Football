@@ -280,7 +280,7 @@
                                 </Button.CommandParameter>
                             </Button>
                             <Button Content="Remove staff" Command="{Binding RemoveStaffCommand}" CommandParameter="{Binding SelectedStaff}"/>
-                            <DataGrid IsReadOnly="True" ItemsSource="{Binding staff}" SelectedItem="{Binding SelectedStaff}" />
+                            <DataGrid IsReadOnly="True" ItemsSource="{Binding trainingStaff}" SelectedItem="{Binding SelectedStaff}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
