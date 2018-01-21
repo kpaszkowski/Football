@@ -328,7 +328,7 @@
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Content="Remove staff" Command="{Binding RemoveWinnersCommand}" CommandParameter="{Binding SelectedWinner}"/>
+                            <Button Content="Remove winner" Command="{Binding RemoveWinnersCommand}" CommandParameter="{Binding SelectedWinner}"/>
                             <DataGrid IsReadOnly="True" ItemsSource="{Binding winners}" SelectedItem="{Binding SelectedWinner}" />
                         </StackPanel>
                     </Grid>
