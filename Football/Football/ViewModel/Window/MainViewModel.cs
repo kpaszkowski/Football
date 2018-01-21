@@ -781,13 +781,15 @@ namespace Football.ViewModel.Window
                 return;
             }
             var values = (object[])parameter;
-            ClubViewModel currentClub = (ClubViewModel)values[1];
+            
             string year = values[0].ToString();
-            int wonMatches = Int32.Parse(values[4].ToString());
-            int lostMatches = Int32.Parse(values[5].ToString());
+            ClubViewModel currentClub = (ClubViewModel)values[1];
             int goalsScored = Int32.Parse(values[2].ToString());
             int goalsLost = Int32.Parse(values[3].ToString());
-            WinnersViewModel currentWinner = (WinnersViewModel)values[5];
+            int wonMatches = Int32.Parse(values[4].ToString());
+            int lostMatches = Int32.Parse(values[5].ToString());
+            WinnersViewModel currentWinner = (WinnersViewModel)values[6];
+
             if (winnersService.EditWinners(currentClub.ID, year, wonMatches, lostMatches, goalsScored, goalsLost, currentWinner.ID))
             {
                 RefereshAll();
@@ -821,8 +823,8 @@ namespace Football.ViewModel.Window
                 return;
             }
             var values = (object[])parameter;
-            ClubViewModel currentClub = (ClubViewModel)values[0];
-            string year = values[1].ToString();
+            string year = values[0].ToString();
+            ClubViewModel currentClub = (ClubViewModel)values[1];
             int wonMatches = Int32.Parse(values[2].ToString());
             int lostMatches = Int32.Parse(values[3].ToString());
             int goalsScored = Int32.Parse(values[4].ToString());
